@@ -1,0 +1,5 @@
+rm -rf build inst && mkdir build && (cd build && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_TOOLCHAIN_FILE=$PWD/../cmake/i686-w64-mingw32.cmake .. && make && make install DESTDIR=$PWD/../inst)
+
+rm -rf build inst && mkdir build && (cd build && EPICS_BASE=/home/mdavidsaver/epics cmake -DCMAKE_MODULE_PATH=$PWD/../cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_TOOLCHAIN_FILE=$PWD/../cmake/powerpc-rtems4.9-mvme3100.cmake .. && make VERBOSE=1 && make install DESTDIR=$PWD/../inst)
+
+rm -rf build inst && mkdir build && (cd build && cmake -DCMAKE_INSTALL_PREFIX=/usr .. && make && make install DESTDIR=$PWD/../inst)
