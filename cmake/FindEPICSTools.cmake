@@ -81,6 +81,10 @@ function(epics_expand_dbd outdbd)
   endforeach(dir)
 
   foreach(file ${_INPUTS})
+    if(IS_ABSOLUTE ${file})
+      list(APPEND DBDS ${file})
+      break()
+    endif()
     find_file(dbdfile ${file}
       PATHS ${_PATHS}
       NO_DEFAULT_PATH
@@ -95,26 +99,24 @@ function(epics_expand_dbd outdbd)
     unset(dbdfile CACHE)
   endforeach(file)
 
+  set_source_files_properties(${outdbd}
+    PROPERTIES GENERATED TRUE
+  )
+
   if(EPICSBase_VERSION VERSION_GREATER 3.15.0.0)
-    add_custom_command(OUTPUT ${outdbd}
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${outdbd}
       COMMAND ${PERL_EXECUTABLE}
       ARGS ${dbdExpand} ${DBDFLAGS} -o ${outdbd} ${DBDS}
       DEPENDS ${dbdExpand} ${DBDS}
     )
   else()
-    add_custom_command(OUTPUT ${outdbd}
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${outdbd}
       COMMAND ${dbdExpand}
       ARGS ${DBDFLAGS} -o ${outdbd} ${DBDS}
       DEPENDS ${dbdExpand} ${DBDS}
     )
   endif()
 
-  # need to tie this command to an actual target.
-  if(NOT TARGET dbd)
-    add_custom_target(dbd ALL DEPENDS ${outdbd})
-  else()
-    add_dependencies(dbd ${outdbd})
-  endif()
 endfunction(epics_expand_dbd)
 
 # Define an IOC executable and .dbd file
@@ -124,14 +126,17 @@ endfunction(epics_expand_dbd)
 # SRCS - Any source files directly inlucded
 #
 function(epics_add_ioc iocname)
-  cmake_parse_arguments("" "NO_INSTALL" "INSTALL_PREFIX" "SRCS;DBDS;LIBS" "${ARGN}")
-  message(STATUS "IOC ${ioname}")
+  cmake_parse_arguments("" "NO_INSTALL" "INSTALL_PREFIX" "SRCS;DBDS;LIBS" ${ARGN})
+  message(STATUS "IOC ${iocname}")
   message(STATUS " DBDS ${_DBDS}")
   message(STATUS " SRCS ${_SRCS}")
   message(STATUS " LIBS ${_LIBS}")
   message(STATUS " NO_INSTALL ${_NO_INSTALL}")
   message(STATUS " INSTALL_PREFIX ${_INSTALL_PREFIX}")
-  epics_expand_dbd(${iocname}.dbd INPUTS ${_DBDS})
+  if(NOT _DBDS)
+    message(SEND_ERROR "IOC ${iocname} needs at least one .dbd file")
+  endif()
+  epics_expand_dbd(${iocname}.dbd INPUTS base.dbd ${_DBDS})
   epics_registerRDD(${iocname}.dbd ${iocname}_registerRecordDeviceDriver.cpp)
   epics_ioc_main(${iocname}Main.cpp)
   add_executable(${iocname}
