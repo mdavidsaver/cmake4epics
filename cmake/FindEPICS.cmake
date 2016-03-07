@@ -33,6 +33,19 @@
 # Version:
 #  EPICSBase_VERSION
 
+#=============================================================================
+# Copyright 2015 Brookhaven Science Assoc. as operator of
+#                Brookhaven National Lab
+# Copyright 2015 Michael Davidsaver
+#
+# Distributed under the OSI-approved BSD License (the "License");
+# see accompanying file LICENSE for details.
+#
+# This software is distributed WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the License for more information.
+#=============================================================================
+
 if(EPICS_FIND_REQUIRED)
   # If we can't figure out the target then everything after
   # will fail.  So stop here if we have to.

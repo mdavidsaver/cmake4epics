@@ -37,6 +37,19 @@
 #  <modname>_<lname>_LIBRARY
 #  <modname>_<file1.dbd>_DBD
 
+#=============================================================================
+# Copyright 2015 Brookhaven Science Assoc. as operator of
+#                Brookhaven National Lab
+# Copyright 2015 Michael Davidsaver
+#
+# Distributed under the OSI-approved BSD License (the "License");
+# see accompanying file LICENSE for details.
+#
+# This software is distributed WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the License for more information.
+#=============================================================================
+
 include(CMakeParseArguments)
 
 function(find_epics_module)

@@ -11,6 +11,19 @@
 #  EPICS_TARGET_HOST     - True if target can build/run Host things (not RTEMS or vxWorks)
 #
 
+#=============================================================================
+# Copyright 2015 Brookhaven Science Assoc. as operator of
+#                Brookhaven National Lab
+# Copyright 2015 Michael Davidsaver
+#
+# Distributed under the OSI-approved BSD License (the "License");
+# see accompanying file LICENSE for details.
+#
+# This software is distributed WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the License for more information.
+#=============================================================================
+
 cmake_minimum_required(VERSION 2.8)
 
 include(FindPackageHandleStandardArgs)
