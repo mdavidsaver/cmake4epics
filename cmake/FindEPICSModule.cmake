@@ -34,7 +34,7 @@
 #  for specific targets
 #
 #  <modname>_<execname>_BIN
-#  <modname>_<lname>_LIBRARY
+#  <modname>_<lname>_LIB
 #  <modname>_<file1.dbd>_DBD
 
 #=============================================================================
@@ -79,12 +79,8 @@ function(find_epics_module)
     NAMES ${FEM_IDFILES}
     HINTS ENV ${FEM_NAME}_DIR
     PATHS
-      /usr/lib/epics
-      /usr/local/epics/${FEM_NAME}
-      /usr/local/epics
-      /opt/epics/base
-      /opt/epics
-      /opt/epics/${FEM_NAME}
+      ${EPICS_BASE_DIR}
+      ${EPICS_BASE_DIR}/../${FEM_NAME}
       ${FEM_PATHS}
     NO_DEFAULT_PATH
     NO_CMAKE_SYSTEM_PATH
