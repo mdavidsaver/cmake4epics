@@ -21,7 +21,8 @@ BUILT=`cat "$HOME/.cache/$BASE/built"`
 HEAD=`cd "$HOME/.build/$BASE" && git log -n1 --pretty=format:%H`
 
 if [ "$HEAD" != "$BUILT" ]; then
-  rm -rf "$HOME/.cache/$BASE"
+  # clear all cached versions
+  rm -rf "$HOME/.cache"
   install -d "$HOME/.cache/$BASE"
 
   if [ "$TARGET" ]; then
