@@ -5,7 +5,6 @@ include_directories(
 epics_add_ioc(simple
  DBDS system.dbd example.dbd
  SRCS counter.c
- INSTALL_PREFIX iocApp/
 )
 
 include(FindEPICSModule)

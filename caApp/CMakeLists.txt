@@ -23,8 +23,8 @@ set_target_properties(caget
    LINKER_LANGUAGE CXX
 )
 
-install(TARGETS caget
-  RUNTIME DESTINATION caApp/bin
+epics_install(
+  PROGS caget
 )
 
 endif()
