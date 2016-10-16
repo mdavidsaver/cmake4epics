@@ -3,6 +3,7 @@ if(EPICS_TARGET_HOST) # skip for RTEMS/vxWorks
 include_directories(
   ${EPICS_INCLUDE_DIRS}
 )
+add_definitions("${EPICS_DEFINITIONS}")
 
 add_executable(caget
   caget.c

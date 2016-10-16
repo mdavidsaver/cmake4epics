@@ -11,6 +11,7 @@
 #  EPICS_INCLUDE_DIRS - All include directories (common, OS, and compiler)
 #  EPICS_LIB_DIR
 #  EPICS_LIBRARIES
+#  EPICS_DEFINITIONS
 #
 #  EPICS_<lib>_LIBRARY - For each component and Com
 #
@@ -228,6 +229,21 @@ endif()
 unset(epioc)
 unset(ephost)
 unset(comp)
+
+# EPICS' own target/compiler specific macros
+# Don't use in new code
+# see https://sourceforge.net/p/predef/wiki/Home/ for alternatives
+
+if(UNIX)
+  list(APPEND EPICS_DEFINITIONS "-DUNIX")
+endif()
+
+if(CMAKE_HOST_SYSTEM_NAME EQUAL "Linux")
+  list(APPEND EPICS_DEFINITIONS "-Dlinux") # use __linux__
+endif()
+if(MINGW)
+  list(APPEND EPICS_DEFINITIONS "-D_MINGW") # use __MINGW32__ or __MINGW64__
+endif()
 
 # Find any OS specific extra libraries
 if(WIN32)
