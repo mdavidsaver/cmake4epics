@@ -68,6 +68,19 @@ function(find_epics_module)
     set(fem_cmplr ${EPICS_TARGET_COMPILER})
   endif()
 
+  find_path(${FEM_NAME}_DIR
+    NAMES ${FEM_IDFILES}
+    HINTS ENV ${FEM_NAME}_DIR
+    PATHS
+      ${EPICS_BASE_DIR}
+      ${EPICS_BASE_DIR}/../${FEM_NAME}
+      ${FEM_PATH}
+      ${EPICS_MODULE_PATH}
+    NO_DEFAULT_PATH
+    NO_CMAKE_SYSTEM_PATH
+    NO_CMAKE_FIND_ROOT_PATH
+  )
+
   set(${FEM_NAME}_INCLUDE_DIRS
     ${${FEM_NAME}_DIR}/include
     ${${FEM_NAME}_DIR}/include/os/${fem_class}
@@ -75,19 +88,7 @@ function(find_epics_module)
     PARENT_SCOPE
   )
 
-  find_path(${FEM_NAME}_DIR
-    NAMES ${FEM_IDFILES}
-    HINTS ENV ${FEM_NAME}_DIR
-    PATHS
-      ${EPICS_BASE_DIR}
-      ${EPICS_BASE_DIR}/../${FEM_NAME}
-      ${FEM_PATHS}
-    NO_DEFAULT_PATH
-    NO_CMAKE_SYSTEM_PATH
-    NO_CMAKE_FIND_ROOT_PATH
-  )
-
-  set(fem_vars ${FEM_NAME}_DIR PARENT_SCOPE)
+  set(${FEM_NAME}_DIR "${${FEM_NAME}_DIR}" PARENT_SCOPE)
 
   # dbd
   foreach(ent IN LISTS FEM_DBDS)
