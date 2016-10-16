@@ -3,7 +3,7 @@ include_directories(
 )
 
 epics_add_ioc(simple
- DBDS softIoc.dbd example.dbd
+ DBDS system.dbd example.dbd
  SRCS counter.c
  INSTALL_PREFIX iocApp/
 )
