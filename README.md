@@ -60,7 +60,7 @@ This package defines:
 * ```EPICS_CORE_INCLUDE_DIR```
 * ```EPICS_OS_INCLUDE_DIR```
 * ```EPICS_COMP_INCLUDE_DIR``` - >=3.15 only
-
+* ```EPICS_TARGET_HOST```` - True except for RTEMS/vxWorks
 
 ### find\_package(EPICSTools)
 
@@ -72,3 +72,12 @@ See [iocApp/CMakeLists.txt](iocApp/CMakeLists.txt) for example usage.
 #### find\_epics_module(NAME modname ...)
 
 #### epics\_install(...)
+
+## Tested configurations
+
+See [.travis.yml](.travis.yml) for auto-tested configurations.
+
+### Linux hosted
+
+Building on Linux for Linux targets works for 32 and 64-bit targets.
+Building for the host is the default behavour of cmake.

@@ -28,7 +28,7 @@ ARGS="-DCMAKE_INSTALL_PREFIX=/usr/lib/epics -DBUILD_SHARED_LIBS=$SHARED"
 
 case "$TARGET" in
 '')
-  cmake $ARGS
+  cmake $ARGS ..
   ;;
 win32-x86-mingw)
   cmake $ARGS -DCMAKE_TOOLCHAIN_FILE=$PWD/../toolchains/i686-w64-mingw32.cmake ..  
