@@ -1,0 +1,26 @@
+sudo: required
+dist: trusty
+language: c
+compiler:
+  - gcc
+env:
+  - BASEBRANCH=3.14
+  - BASEBRANCH=3.15
+  - BASEBRANCH=3.16
+addons:
+  apt:
+    packages:
+    - libreadline6-dev
+    - libncurses5-dev
+    - perl
+    - clang
+    - g++-mingw-w64-i686
+    - bison
+    - flex
+    - texinfo
+    - install-info
+cache:
+  directories:
+   - $HOME/.cache
+install: ./build-base.sh </dev/null
+script: ./build-travis.sh </dev/null
