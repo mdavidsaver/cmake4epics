@@ -3,9 +3,10 @@ set -e -x
 
 [ "$BASEURL" ] || BASEURL=https://github.com/epics-base/epics-base
 [ "$BASEBRANCH" ] || BASEBRANCH=3.14
+[ "$SHARED" ] || SHARED=YES
 # TARGET
 
-BASE="base-$BASEBRANCH-$TARGET"
+BASE="base-$BASEBRANCH-$TARGET-$SHARED"
 
 install -d "$HOME/.build"
 git clone --branch "$BASEBRANCH" --depth 10 "$BASEURL" "$HOME/.build/$BASE"
@@ -30,7 +31,7 @@ if [ "$HEAD" != "$BUILT" ]; then
   case "$TARGET" in
   win32-x86-mingw)
     echo "CMPLR_PREFIX = i686-w64-mingw32-" >> "$HOME/.build/$BASE/configure/os/CONFIG_SITE.linux-x86.win32-x86-mingw"
-    if [ "$STATIC" = "NO" ]; then
+    if [ "$SHARED" = "YES" ]; then
       cat <<EOF >> "$HOME/.build/$BASE/configure/os/CONFIG_SITE.linux-x86.win32-x86-mingw"
 SHARED_LIBRARIES = YES
 STATIC_BUILD = NO
@@ -39,7 +40,7 @@ EOF
     ;;
   windows-x64-mingw)
     echo "CMPLR_PREFIX = x86_64-w64-mingw32-" >> "$HOME/.build/$BASE/configure/os/CONFIG_SITE.linux-x86.windows-x64-mingw"
-    if [ "$STATIC" = "NO" ]; then
+    if [ "$SHARED" = "YES" ]; then
       cat <<EOF >> "$HOME/.build/$BASE/configure/os/CONFIG_SITE.linux-x86.windows-x64-mingw"
 SHARED_LIBRARIES = YES
 STATIC_BUILD = NO

@@ -3,9 +3,10 @@ set -e -x
 
 [ "$BASEURL" ] || BASEURL=https://github.com/epics-base/epics-base
 [ "$BASEBRANCH" ] || BASEBRANCH=3.14
+[ "$SHARED" ] || SHARED=YES
 # TARGET
 
-BASE="base-$BASEBRANCH-$TARGET"
+BASE="base-$BASEBRANCH-$TARGET-$SHARED"
 
 export EPICS_BASE="$HOME/.cache/$BASE"
 
@@ -21,15 +22,19 @@ mkdir inst
 INST="$PWD/inst"
 cd build
 
+cmake --version
+
+ARGS="-DCMAKE_INSTALL_PREFIX=/usr/lib/epics -DBUILD_SHARED_LIBS=$SHARED"
+
 case "$TARGET" in
 '')
-  cmake -DCMAKE_INSTALL_PREFIX=/usr/lib/epics ..
+  cmake $ARGS
   ;;
 win32-x86-mingw)
-  cmake -DCMAKE_INSTALL_PREFIX=/usr/lib/epics -DCMAKE_TOOLCHAIN_FILE=$PWD/../toolchains/i686-w64-mingw32.cmake ..  
+  cmake $ARGS -DCMAKE_TOOLCHAIN_FILE=$PWD/../toolchains/i686-w64-mingw32.cmake ..  
   ;;
 windows-x64-mingw)
-  cmake -DCMAKE_INSTALL_PREFIX=/usr/lib/epics -DCMAKE_TOOLCHAIN_FILE=$PWD/../toolchains/x86_64-w64-mingw32.cmake ..  
+  cmake $ARGS -DCMAKE_TOOLCHAIN_FILE=$PWD/../toolchains/x86_64-w64-mingw32.cmake ..  
   ;;
 *) die "Unsupported PROF='$PROF'";;
 esac

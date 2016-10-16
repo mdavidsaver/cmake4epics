@@ -238,7 +238,7 @@ if(UNIX)
   list(APPEND EPICS_DEFINITIONS "-DUNIX")
 endif()
 
-if(CMAKE_HOST_SYSTEM_NAME EQUAL "Linux")
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
   list(APPEND EPICS_DEFINITIONS "-Dlinux") # use __linux__
 endif()
 if(MINGW)

@@ -7,16 +7,24 @@ Place the _cmake/_ sub-directory in the cmake module path
 
 Then use the extra commands, and the variables they define.
 
-For example, if this repository is included as a git submodule.
+For example, if this repository is included as a git submodule as a sub-directory 'c4e'.
 Then to link against libca.
 See [caApp/CMakeLists.txt](caApp/CMakeLists.txt) for a full example
 
 ```cmake
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/c4e/cmake)
 find_package(EPICS COMPONENTS ca) # Com is implied
-include_directories(${EPICS_INCLUDE_DIRS})
-add_definitions("${EPICS_DEFINITIONS}")
 add_executable(myexe ...source files...)
+target_compile_definitions(myexe
+  PUBLIC ${EPICS_DEFINITIONS}
+  PRIVATE ${EPICS_DEFINITIONS}
+  INTERFACE ${EPICS_DEFINITIONS}
+)
+target_include_directories(myexe
+  PUBLIC ${EPICS_INCLUDE_DIRS}
+  PRIVATE ${EPICS_INCLUDE_DIRS}
+  INTERFACE ${EPICS_INCLUDE_DIRS}
+)
 target_link_libraries(myexe
   ${EPICS_ca_LIBRARY}
   ${EPICS_Com_LIBRARY}
@@ -62,3 +70,5 @@ See [iocApp/CMakeLists.txt](iocApp/CMakeLists.txt) for example usage.
 #### epics\_add_ioc(iocname ...)
 
 #### find\_epics_module(NAME modname ...)
+
+#### epics\_install(...)

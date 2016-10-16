@@ -1,13 +1,18 @@
 if(EPICS_TARGET_HOST) # skip for RTEMS/vxWorks
 
-include_directories(
-  ${EPICS_INCLUDE_DIRS}
-)
-add_definitions("${EPICS_DEFINITIONS}")
-
 add_executable(caget
   caget.c
   tool_lib.c
+)
+target_include_directories(caget
+  PUBLIC ${EPICS_INCLUDE_DIRS}
+  PRIVATE ${EPICS_INCLUDE_DIRS}
+  INTERFACE ${EPICS_INCLUDE_DIRS}
+)
+target_compile_definitions(caget
+  PUBLIC ${EPICS_DEFINITIONS}
+  PRIVATE ${EPICS_DEFINITIONS}
+  INTERFACE ${EPICS_DEFINITIONS}
 )
 target_link_libraries(caget
   ${EPICS_ca_LIBRARY}
