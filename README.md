@@ -31,6 +31,12 @@ target_link_libraries(myexe
 )
 ```
 
+## Reporting Problems
+
+When reporting a build failure of _this_ repository,
+please include the full output from a clean run of ```cmake``` and
+build output (eg. ```make```).
+
 ## Commands
 
 ### find\_package(EPICS ...)
@@ -69,9 +75,65 @@ See [iocApp/CMakeLists.txt](iocApp/CMakeLists.txt) for example usage.
 
 #### epics\_add_ioc(iocname ...)
 
-#### find\_epics_module(NAME modname ...)
+Build an IOC executable.
+
+```cmake
+epics_add_ioc(<iocname>
+  SRCS some.c
+  DBDS local.dbd
+  LIBS OtherLib  # ${EPICS_IOC_LIBRARIES} is implied
+  # NO_INSTALL  # uncomment to skip automatic install
+)
+```
 
 #### epics\_install(...)
+
+Install to EPICS standard directory layout.
+
+```cmake
+epics_install(
+  PROGS exetarget  # installed as bin/${EPICS_TARGET_ARCH}/exetarget
+  LIBS libtarget   # installed as lib/${EPICS_TARGET_ARCH}/libtarget
+  DBDS some.dbd    # installed as dbd/some.dbd
+  DBDS some.db     # installed as db/some.db
+  INCS some.h      # installed as include/some.h
+  OSINCS special.h # installed as include/os/${EPICS_TARGET_CLASS}/special.h
+  COMPINCS other.h # installed as include/compiler/${EPICS_TARGET_COMPILER}/other.h
+)
+````
+
+### find\_package(FindEPICSModule)
+
+#### find\_epics_module(NAME modname ...)
+
+Search for an EPICS "module" (usually a library and .dbd file).
+
+```cmake
+find_epics_module(NAME <modname>
+  REQUIRED
+  QUIET
+  IDFILES some.h  # files which must exist
+  HEADERS some.h
+  DBDS some.dbd
+  LIBS libtarget
+  BINS someexe
+)
+```
+
+Defines
+
+* ```${<modname>_FOUND}```
+* ```${<modname>_INCLUDE_DIRS}```
+* ```${<modname>_<some.dbd>_DBD}``` - for each DBDS
+* ```${<modname>_<libtarget>_LIB}``` - for each LIBS
+* ```${<modname>_<someexe>_BIN}``` - for each BINS
+
+Search path is
+
+* ```$ENV{<modname>_DIR}```
+* ```${EPICS_MODULE_PATH}```
+* ```${EPICS_BASE_DIR}/../<modname>/```
+* ```${EPICS_BASE_DIR}/```
 
 ## Tested configurations
 
@@ -86,3 +148,17 @@ Building for the host is the default behavour of cmake.
 
 Use MinGW as cross compiler to build Windows executables on a Linux host.
 Tested for 32 and 64-bit targets w/ DLL and static build with Base 3.16.
+
+Use toolchain files [toolchains/i686-w64-mingw32.cmake](toolchains/i686-w64-mingw32.cmake)
+or [toolchains/x86_64-w64-mingw32.cmake](toolchains/x86_64-w64-mingw32.cmake).
+
+The cross compiler executables are assumed to be in ```$PATH```.
+
+### Cross RTEMS on Linux
+
+Use [toolchains/powerpc-mvme3100-rtems4.9.cmake](toolchains/powerpc-mvme3100-rtems4.9.cmake)
+as a template.
+
+### Other
+
+Other configurations have not been tested.

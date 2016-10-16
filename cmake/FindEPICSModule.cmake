@@ -53,7 +53,7 @@
 include(CMakeParseArguments)
 
 function(find_epics_module)
-  set(options REQUIRED QUIET NO_DEFAULT_PATH HOST)
+  set(options REQUIRED QUIET HOST)
   set(onearg NAME)
   set(manyarg HEADERS DBDS LIBS BINS PATH IDFILES)
   cmake_parse_arguments(FEM "${options}" "${onearg}" "${manyarg}" ${ARGN})
@@ -72,10 +72,10 @@ function(find_epics_module)
     NAMES ${FEM_IDFILES}
     HINTS ENV ${FEM_NAME}_DIR
     PATHS
-      ${EPICS_BASE_DIR}
-      ${EPICS_BASE_DIR}/../${FEM_NAME}
-      ${FEM_PATH}
       ${EPICS_MODULE_PATH}
+      ${FEM_PATH}
+      ${EPICS_BASE_DIR}/../${FEM_NAME}
+      ${EPICS_BASE_DIR}
     NO_DEFAULT_PATH
     NO_CMAKE_SYSTEM_PATH
     NO_CMAKE_FIND_ROOT_PATH

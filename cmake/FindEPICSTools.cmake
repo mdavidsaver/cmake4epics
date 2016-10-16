@@ -172,7 +172,7 @@ function(epics_add_ioc iocname)
 endfunction(epics_add_ioc)
 
 function(epics_install)
-  cmake_parse_arguments("" "" "PREFIX" "PROGS;LIBS;INCS;OSINCS;COMPINCS;DBDS" "${ARGN}")
+  cmake_parse_arguments("" "" "PREFIX" "PROGS;LIBS;INCS;OSINCS;COMPINCS;DBDS;DBS" "${ARGN}")
   if(_PROGS OR _LIBS)
     install(TARGETS ${_PROGS} ${_LIBS}
       RUNTIME DESTINATION ${_PREFIX}bin/${EPICS_TARGET_ARCH}
@@ -192,6 +192,9 @@ function(epics_install)
   endif()
   if(_DBDS)
     install(FILES ${_DBDS} DESTINATION ${_PREFIX}dbd)
+  endif()
+  if(_DBS)
+    install(FILES ${_DBS} DESTINATION ${_PREFIX}db)
   endif()
 endfunction(epics_install)
 
