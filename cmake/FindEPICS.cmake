@@ -238,7 +238,7 @@ if(UNIX)
   list(APPEND EPICS_DEFINITIONS "UNIX")
 endif()
 
-if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   list(APPEND EPICS_DEFINITIONS "linux") # use __linux__
 endif()
 if(MINGW)
