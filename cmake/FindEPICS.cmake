@@ -250,6 +250,7 @@ if(NOT EPICS_DEFINITIONS)
 endif()
 
 # Find any OS specific extra libraries
+# equivalent to ${OP_SYS_LDLIBS}
 if(WIN32)
   find_library(EPICS_ws2_32_LIBRARY ws2_32
     DOC "winsock 2 library"
@@ -267,9 +268,15 @@ elseif(RTEMS)
   find_library(RTEMSCPU rtemscpu)
   find_library(RTEMSNFS nfs)
   list(APPEND EPICS_Com_LIBRARY ${RTEMSCPU} ${RTEMSNFS})
+  list(APPEND EPICS_LIBRARIES ${RTEMSCPU} ${RTEMSNFS})
+  list(APPEND EPICS_IOC_LIBRARIES ${RTEMSCPU} ${RTEMSNFS})
+  list(APPEND EPICS_HOST_LIBRARIES ${RTEMSCPU} ${RTEMSNFS})
   find_library(BSPEXT bspExt)
   if(BSPEXT)
     list(APPEND EPICS_Com_LIBRARY ${BSPEXT})
+    list(APPEND EPICS_LIBRARIES ${BSPEXT})
+    list(APPEND EPICS_IOC_LIBRARIES ${BSPEXT})
+    list(APPEND EPICS_HOST_LIBRARIES ${BSPEXT})
   endif()
 
 endif()
