@@ -9,6 +9,8 @@ env:
   - BASEBRANCH=3.16
   - BASEBRANCH=3.16 TARGET=win32-x86-mingw SHARED=YES
   - BASEBRANCH=3.16 TARGET=win32-x86-mingw SHARED=NO
+  - BASEBRANCH=3.16 TARGET=windows-x64-mingw SHARED=YES
+  - BASEBRANCH=3.16 TARGET=windows-x64-mingw SHARED=NO
 addons:
   apt:
     packages:
@@ -16,7 +18,7 @@ addons:
     - libncurses5-dev
     - perl
     - clang
-    - g++-mingw-w64-i686
+    - mingw-w64
     - bison
     - flex
     - texinfo

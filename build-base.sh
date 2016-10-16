@@ -37,6 +37,11 @@ if [ "$HEAD" != "$BUILT" ]; then
 SHARED_LIBRARIES = YES
 STATIC_BUILD = NO
 EOF
+    else
+      cat <<EOF >> "$HOME/.build/$BASE/configure/os/CONFIG_SITE.linux-x86.win32-x86-mingw"
+SHARED_LIBRARIES = NO
+STATIC_BUILD = YES
+EOF
     fi
     ;;
   windows-x64-mingw)
@@ -45,6 +50,11 @@ EOF
       cat <<EOF >> "$HOME/.build/$BASE/configure/os/CONFIG_SITE.linux-x86.windows-x64-mingw"
 SHARED_LIBRARIES = YES
 STATIC_BUILD = NO
+EOF
+    else
+      cat <<EOF >> "$HOME/.build/$BASE/configure/os/CONFIG_SITE.linux-x86.windows-x64-mingw"
+SHARED_LIBRARIES = NO
+STATIC_BUILD = YES
 EOF
     fi
     ;;

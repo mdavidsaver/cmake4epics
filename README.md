@@ -81,3 +81,8 @@ See [.travis.yml](.travis.yml) for auto-tested configurations.
 
 Building on Linux for Linux targets works for 32 and 64-bit targets.
 Building for the host is the default behavour of cmake.
+
+### Cross MinGW on Linux
+
+Use MinGW as cross compiler to build Windows executables on a Linux host.
+Tested for 32 and 64-bit targets w/ DLL and static build with Base 3.16.
