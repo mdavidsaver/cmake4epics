@@ -157,9 +157,9 @@ function(epics_add_ioc iocname)
     ${_SRCS}
   )
   target_compile_definitions(${iocname}
-    PRIVATE "${EPICS_DEFINITIONS}"
-    PUBLIC  "${EPICS_DEFINITIONS}"
-    INTERFACE "${EPICS_DEFINITIONS}"
+    PRIVATE ${EPICS_DEFINITIONS}
+    PUBLIC  ${EPICS_DEFINITIONS}
+    INTERFACE ${EPICS_DEFINITIONS}
   )
   target_link_libraries(${iocname} ${EPICS_IOC_LIBRARIES} ${_LIBS})
   if(NOT _NO_INSTALL)

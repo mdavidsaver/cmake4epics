@@ -231,18 +231,22 @@ unset(ephost)
 unset(comp)
 
 # EPICS' own target/compiler specific macros
-# Don't use in new code
-# see https://sourceforge.net/p/predef/wiki/Home/ for alternatives
+# equivalent of ${OP_SYS_CPPFLAGS}
+# prefer for new code --> https://sourceforge.net/p/predef/wiki/Home/ for alternatives
 
 if(UNIX)
-  list(APPEND EPICS_DEFINITIONS "-DUNIX")
+  list(APPEND EPICS_DEFINITIONS "UNIX")
 endif()
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-  list(APPEND EPICS_DEFINITIONS "-Dlinux") # use __linux__
+  list(APPEND EPICS_DEFINITIONS "linux") # use __linux__
 endif()
 if(MINGW)
-  list(APPEND EPICS_DEFINITIONS "-D_MINGW") # use __MINGW32__ or __MINGW64__
+  list(APPEND EPICS_DEFINITIONS "_MINGW") # use __MINGW32__ or __MINGW64__
+endif()
+
+if(NOT EPICS_DEFINITIONS)
+  set(EPICS_DEFINITIONS "")
 endif()
 
 # Find any OS specific extra libraries
