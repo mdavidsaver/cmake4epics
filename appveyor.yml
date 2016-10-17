@@ -1,0 +1,19 @@
+os: Visual Studio 2015
+
+platform:
+  - x86
+  - x64
+configuration: Release
+
+clone_folder: c:\projects\cmake4epics
+
+before_build:
+  - echo Running cmake...
+  - cd c:\projects\cmake4epics
+  - cmake --version
+  - cmake --help
+  - cmake --system-information
+  - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX=c:\projects\install
+
+build:
+  project: INSTALL.vcxproj
