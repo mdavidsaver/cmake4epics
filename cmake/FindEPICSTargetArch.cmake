@@ -76,7 +76,7 @@ if(UNIX)
       set(EPICS_TARGET_ARCHS "linux-ppc64")
 
     else()
-      message(WARNING "Unknown Linux Variant: ${CMAKE_SYSTEM_PROCESSOR}")
+      message(SEND_ERROR "Unknown Linux Variant: ${CMAKE_SYSTEM_PROCESSOR}")
     endif()
 
   elseif(CMAKE_SYSTEM_NAME MATCHES SunOS)
@@ -100,7 +100,7 @@ if(UNIX)
       endif()
 
     else()
-      message(WARNING "Unknown SunOS Variant: ${CMAKE_SYSTEM_PROCESSOR}")
+      message(SEND_ERROR "Unknown SunOS Variant: ${CMAKE_SYSTEM_PROCESSOR}")
     endif()
 
   elseif(RTEMS)
@@ -110,7 +110,7 @@ if(UNIX)
     set(EPICS_TARGET_ARCHS "RTEMS-${RTEMS_BSP}")
 
   else()
-    message(WARNING "Unknown *nix Variant: ${CMAKE_SYSTEM_NAME}")
+    message(SEND_ERROR "Unknown *nix Variant: ${CMAKE_SYSTEM_NAME}")
   endif()
 
 elseif(WIN32)
@@ -118,6 +118,7 @@ elseif(WIN32)
   set(EPICS_TARGET_CLASS WIN32)
   set(EPICS_TARGET_CLASSES WIN32 default)
 
+  # eg. AMD64
   if(CMAKE_SYSTEM_PROCESSOR MATCHES "64$")
   
     if(MINGW)
@@ -126,7 +127,10 @@ elseif(WIN32)
     elseif(MSVC)
       set(EPICS_TARGET_ARCHS "windows-x64")
 
-    else(NOT CYGWIN)
+    else(CYGWIN)
+      set(EPICS_TARGET_ARCHS "cygwin-x86_64")
+
+    else()
       message(WARNING "Unknown Windows 64 variant: ${CMAKE_SYSTEM_NAME}")
       message(WARNING "Assuming default")
       set(EPICS_TARGET_ARCHS "windows-x64" "windows-x64-static")
@@ -162,11 +166,11 @@ elseif(CMAKE_APPLE)
     set(EPICS_TARGET_ARCHS "darwin-ppc")
 
   else()
-    message(WARNING "Unknown Apple variant: ${CMAKE_SYSTEM_NAME}")
+    message(SEND_ERROR "Unknown Apple variant: ${CMAKE_SYSTEM_NAME}")
   endif()
 
 else(UNIX)
-  message(FATAL_ERROR "Unable to determine EPICS OS class")
+  message(SEND_ERROR "Unable to determine EPICS OS class")
 endif(UNIX)
 
 if(NOT EPICS_TARGET_COMPILER)
@@ -175,7 +179,7 @@ if(NOT EPICS_TARGET_COMPILER)
   elseif(MSVC)
     set(EPICS_TARGET_COMPILER msvc)
   else()
-    message(WARNING "Unable to guess target compiler")
+    message(SEND_ERROR "Unable to guess target compiler")
   endif()
 endif()
 

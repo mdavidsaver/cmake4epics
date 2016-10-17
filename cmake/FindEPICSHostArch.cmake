@@ -82,11 +82,11 @@ if(CMAKE_HOST_UNIX)
       set(EPICS_HOST_ARCHS "solaris-x86_64" "solaris-x86_64-gnu")
 
     else()
-      message(WARNING "Unknown SunOS Variant: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+      message(SEND_ERROR "Unknown SunOS Variant: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
     endif()
 
   else()
-    message(WARNING "Unknown *nix Variant: ${CMAKE_HOST_SYSTEM_NAME}")
+    message(SEND_ERROR "Unknown *nix Variant: ${CMAKE_HOST_SYSTEM_NAME}")
 
   endif()
 
@@ -95,7 +95,8 @@ elseif(CMAKE_HOST_WIN32)
   set(EPICS_HOST_CLASSES WIN32 default)
 
   if(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "64$")
-  
+
+    # eg. AMD64
     if(CMAKE_HOST_SYSTEM_NAME MATCHES MinGW)
       set(EPICS_HOST_ARCHS "windows-x64-mingw")
       set(EPICS_HOST_COMPILER gcc)
@@ -109,7 +110,7 @@ elseif(CMAKE_HOST_WIN32)
       message(WARNING "Assuming default")
       set(EPICS_HOST_ARCHS "windows-x64" "windows-x64-static")
       set(EPICS_HOST_COMPILER msvc)
-    endif(MINGW)
+    endif()
   
   elseif(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "86$")
   
@@ -148,15 +149,15 @@ elseif(CMAKE_HOST_APPLE)
     set(EPICS_HOST_ARCHS "darwin-ppc")
 
   else()
-    message(WARNING "Unknown Apple variant: ${CMAKE_HOST_SYSTEM_NAME}")
+    message(SEND_ERROR "Unknown Apple variant: ${CMAKE_HOST_SYSTEM_NAME}")
   endif()
 
 else()
-  message(WARNING "Unable to determine EPICS host OS class")
+  message(SEND_ERROR "Unable to determine EPICS host OS class")
 endif()
 
 if(NOT EPICS_HOST_COMPILER)
-  message(WARNING "Unable to guess host compiler")
+  message(SEND_ERROR "Unable to guess host compiler")
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
