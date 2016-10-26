@@ -1,7 +1,6 @@
 os: Visual Studio 2015
 
 platform:
-  - x86
   - x64
 configuration: Release
 
@@ -15,7 +14,7 @@ before_build:
   - cmake --version
   - cmake --help
   - cmake --system-information
-  - cmake -G "Visual Studio 14 2015" -DCMAKE_INSTALL_PREFIX=c:\projects\install
+  - cmake -G "Visual Studio 14 2015" -DEPICS_HOST_ARCH=win32-x86 -DCMAKE_INSTALL_PREFIX=c:\projects\install
 
 build:
   project: INSTALL.vcxproj
