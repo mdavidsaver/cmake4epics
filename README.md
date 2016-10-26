@@ -1,5 +1,51 @@
 # Building EPICS Modules w/ CMake
 
+## User Options
+
+When building a package which provides a CMakeLists.txt using cmake4epics
+several options are available.
+
+The location of EPICS Base may be given with the ```EPICS_BASE``` environment variable,
+or the ```EPICS_BASE_DIR``` CMake variable.  For example
+
+```cmake
+EPICS_BASE=$HOME/epics/base cmake
+# or
+cmake -DEPICS_BASE_DIR=$HOME/epics/base
+```
+
+When not explictly provided, the following locations are checked in order.
+
+```
+/usr/lib/epics
+/usr/local/epics/base
+/usr/local/epics
+/opt/epics/base
+/opt/epics
+```
+
+When the ```find_epics_module(<modname> ...)``` CMake function is used,
+the module location may be explicitly given with, for example
+```-D<modname>_DIR=$HOME/epics/<modname>```.
+An environment variable of the same name is also checked.
+
+When not explictly provided, the following locations are checked in order.
+
+```
+${EPICS_MODULE_PATH}
+${<modname>_PATH}
+${EPICS_BASE_DIR}/../<modname>
+${EPICS_BASE_DIR} # will always appear last
+```
+
+In certain situations, such as a 32-bit only build on a 64-bit host,
+it may be necessary to override the detected Host arch. with
+```-DEPICS_HOST_ARCH=<arch-name>```.
+
+The Target arch. can't be overridden explictly, but rather
+through a choice of toolchain file and/or CMake generator.
+See cross-compiling section below.
+
 ## Basic Usage
 
 Place the _cmake/_ sub-directory in the cmake module path
