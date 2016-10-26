@@ -20,7 +20,7 @@
 #=============================================================================
 # Copyright 2015 Brookhaven Science Assoc. as operator of
 #                Brookhaven National Lab
-# Copyright 2015 Michael Davidsaver
+# Copyright 2016 Michael Davidsaver
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file LICENSE for details.
@@ -46,7 +46,62 @@ include(FindPackageHandleStandardArgs)
 # CMAKE_HOST_WIN32
 #
 
-if(CMAKE_HOST_UNIX)
+include(CMakeParseArguments)
+
+#TODO: option to use clang instead of gcc
+
+function(epics_disect_target target)
+  cmake_parse_arguments("" "" "CLASS;CLASSES;COMPILER" "" ${ARGN})
+  if(NOT target)
+    message(SEND_ERROR "Unable to determine target name")
+  elseif(target MATCHES "^linux-")
+    set(class Linux)
+    set(classes Linux posix default)
+    set(compiler gcc)
+
+  elseif(target MATCHES "^solaris-")
+    set(class solaris)
+    set(classes solaris posix default)
+    if(target MATCHES "gnu")
+      set(compiler gcc)
+    else()
+      set(compiler solStudio)
+    endif()
+
+  elseif(target MATCHES "^win")
+    set(class WIN32)
+    set(classes WIN32 default)
+    if(target MATCHES "mingw")
+      set(compiler gcc)
+    else()
+      set(compiler msvc)
+    endif()
+
+  elseif(target MATCHES "^darwin")
+    set(class Darwin)
+    set(classes Darwin default)
+    set(compiler clang)
+  else()
+    message(SEND_ERROR "Unknown target ${target}")
+  endif()
+
+  set(${_CLASS} "${class}" PARENT_SCOPE)
+  set(${_CLASSES} "${classes}" PARENT_SCOPE)
+  set(${_COMPILER} "${compiler}" PARENT_SCOPE)
+endfunction()
+
+if(EPICS_HOST_ARCH)
+  message(STATUS "Override automatic host arch. detection with ${EPICS_HOST_ARCH}")
+
+  set(EPICS_HOST_ARCHS "${EPICS_HOST_ARCH}")
+
+  epics_disect_target(${EPICS_HOST_ARCHS}
+    CLASS EPICS_HOST_CLASS
+    CLASSES EPICS_HOST_CLASSES
+    COMPILER EPICS_HOST_COMPILER
+  )
+
+elseif(CMAKE_HOST_UNIX)
   if(CMAKE_HOST_SYSTEM_NAME MATCHES Linux)
     set(EPICS_HOST_CLASS Linux)
     set(EPICS_HOST_CLASSES Linux posix default)
