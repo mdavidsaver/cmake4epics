@@ -13,7 +13,7 @@ before_build:
   - cmake --version
   - cmake --help
   - cmake --system-information
-  - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX=c:\projects\install
+  - cmake -G "Visual Studio 14 2015" -DCMAKE_INSTALL_PREFIX=c:\projects\install
 
 build:
   project: INSTALL.vcxproj
