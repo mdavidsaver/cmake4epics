@@ -8,6 +8,8 @@ configuration: Release
 clone_folder: c:\projects\cmake4epics
 
 before_build:
+  - echo List environment
+  - set
   - echo Running cmake...
   - cd c:\projects\cmake4epics
   - cmake --version

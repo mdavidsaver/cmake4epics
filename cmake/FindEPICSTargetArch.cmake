@@ -50,6 +50,10 @@ include(FindPackageHandleStandardArgs)
 # CMAKE_C_PLATFORM_ID
 # CMAKE_COMPILER_IS_GNUCC
 #
+# Extras with windows with MSVC
+#
+# MSVC_C_ARCHITECTURE_ID
+#
 # Additional non-standard variables which may be set by
 # cross builds
 #
@@ -118,15 +122,24 @@ elseif(WIN32)
   set(EPICS_TARGET_CLASS WIN32)
   set(EPICS_TARGET_CLASSES WIN32 default)
 
+  if(MSVC)
+    # CMake on windows seems to have a hard time distinguishing
+    # between 32 (/machine:X86) and 64 bit builds (/MACHINE:X64)
+    # the CMAKE_SYSTEM_* variables seem to always reflect the host
+    if(MSVC_C_ARCHITECTURE_ID MATCHES 86) # eg. X86
+      set(EPICS_TARGET_ARCHS "win32-x86")
+    elseif(MSVC_C_ARCHITECTURE_ID MATCHES 64) # x64
+      set(EPICS_TARGET_ARCHS "windows-x64")
+    else()
+      message(SEND_ERROR "Unknown MSVC arch: ${MSVC_C_ARCHITECTURE_ID}")
+    endif()
+
   # eg. AMD64
-  if(CMAKE_SYSTEM_PROCESSOR MATCHES "64$")
+  elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "64$")
   
     if(MINGW)
       set(EPICS_TARGET_ARCHS "windows-x64-mingw")
   
-    elseif(MSVC)
-      set(EPICS_TARGET_ARCHS "windows-x64")
-
     else(CYGWIN)
       set(EPICS_TARGET_ARCHS "cygwin-x86_64")
 
@@ -140,12 +153,9 @@ elseif(WIN32)
   
     if(MINGW)
       set(EPICS_TARGET_ARCHS "win32-x86-mingw")
-    
+
     elseif(CYGWIN)
       set(EPICS_TARGET_ARCHS "win32-x86-cygwin")
-    
-    elseif(MSVC)
-      set(EPICS_TARGET_ARCHS "win32-x86")
 
     else()
       message(WARNING "Unknown Windows 32 variant: ${CMAKE_SYSTEM_NAME}")
