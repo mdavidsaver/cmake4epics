@@ -145,6 +145,15 @@ if(NOT alreadyhaveepicsver)
                     OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake
     )
   endif()
+  # re-process generated .cmake to remove any leftovers
+  #  MSVC apparently leaves some C block comments
+  file(STRINGS ${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake epics_version_cmake REGEX "^set")
+
+  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake "\n")
+  foreach(line IN LISTS epics_version_cmake)
+    file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake "${line}\n")
+  endforeach()
+
   include(${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake OPTIONAL)
 endif()
 unset(alreadyhaveepicsver)
