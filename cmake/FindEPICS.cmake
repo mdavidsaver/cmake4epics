@@ -72,35 +72,16 @@ find_path(EPICS_BASE_DIR include/epicsVersion.h
 if(EPICS_BASE_DIR)
   message(STATUS "Using EPICS_BASE_DIR=${EPICS_BASE_DIR}")
   set(EPICS_CORE_INCLUDE_DIR "${EPICS_BASE_DIR}/include")
-else()
+  set(EPICS_OS_INCLUDE_DIR   "${EPICS_BASE_DIR}/include/os/${EPICS_TARGET_CLASS}")
+  set(EPICS_COMP_INCLUDE_DIR "${EPICS_BASE_DIR}/include/compiler/${EPICS_TARGET_COMPILER}")
+  set(EPICS_INCLUDE_DIRS
+    "${EPICS_CORE_INCLUDE_DIR}"
+    "${EPICS_OS_INCLUDE_DIR}"
+    "${EPICS_COMP_INCLUDE_DIR}"
+  )
+
+else(NOT EPICS_FIND_QUIETLY)
   message(WARNING "Couldn't find EPICS_BASE_DIR!")
-endif()
-
-find_path(EPICS_OS_INCLUDE_DIR
-  NAMES osdSock.h osdTime.h osdThread.h osdWireConfig.h
-  PATHS "${EPICS_CORE_INCLUDE_DIR}/os/${EPICS_TARGET_CLASS}"
-  NO_DEFAULT_PATH
-  NO_CMAKE_SYSTEM_PATH
-  NO_CMAKE_FIND_ROOT_PATH
-)
-mark_as_advanced(EPICS_OS_INCLUDE_DIR)
-
-if(NOT EPICS_OS_INCLUDE_DIR)
-  message(WARNING "Could not find OS headers")
-else()
-  set(EPICS_INCLUDE_DIRS "${EPICS_CORE_INCLUDE_DIR}" "${EPICS_OS_INCLUDE_DIR}")
-endif()
-
-find_path(EPICS_COMP_INCLUDE_DIR
-  NAMES compilerSpecific.h  epicsAtomicCD.h
-  PATHS "${EPICS_CORE_INCLUDE_DIR}/compiler/${EPICS_TARGET_COMPILER}"
-  NO_DEFAULT_PATH
-  NO_CMAKE_SYSTEM_PATH
-  NO_CMAKE_FIND_ROOT_PATH
-)
-mark_as_advanced(EPICS_COMP_INCLUDE_DIR)
-if(EPICS_COMP_INCLUDE_DIR)
-  list(APPEND EPICS_INCLUDE_DIRS "${EPICS_COMP_INCLUDE_DIR}")
 endif()
 
 # Search through the various possible target archs
@@ -114,9 +95,14 @@ if(NOT DEFINED EPICS_TARGET_ARCH)
     NO_CMAKE_SYSTEM_PATH
     NO_CMAKE_FIND_ROOT_PATH
   )
-  mark_as_advanced(EPICS_X_LIBRARY)
-  get_filename_component(EPICS_X_PATH "${EPICS_X_LIBRARY}" PATH)
-  get_filename_component(EPICS_TARGET_ARCH "${EPICS_X_PATH}" NAME CACHE)
+  if(EPICS_X_LIBRARY)
+    mark_as_advanced(EPICS_X_LIBRARY)
+    get_filename_component(EPICS_X_PATH "${EPICS_X_LIBRARY}" PATH)
+    get_filename_component(EPICS_TARGET_ARCH "${EPICS_X_PATH}" NAME CACHE)
+  endif()
+endif()
+
+if(EPICS_BASE_DIR AND EPICS_TARGET_ARCH)
 endif()
 
 # Detect EPICS Base version from epicsVersion.h
@@ -217,7 +203,9 @@ if(epioc GREATER -1)
       list(APPEND EPICS_IOC_LIBRARIES ${EPICS_${comp}_LIBRARY})
     else()
       set(EPICS_IOC_FOUND FALSE)
-      message(WARNING "Missing IOC component ${comp}")
+      if(NOT EPICS_FIND_QUIETLY)
+        message(WARNING "Missing IOC component ${comp}")
+      endif()
     endif()
   endforeach()
 endif()
@@ -230,7 +218,9 @@ if(ephost GREATER -1)
       list(APPEND EPICS_HOST_LIBRARIES ${EPICS_${comp}_LIBRARY})
     else()
       set(EPICS_HOST_FOUND FALSE)
-      message(WARNING "Missing HOST component ${comp}")
+      if(NOT EPICS_FIND_QUIETLY)
+        message(WARNING "Missing HOST component ${comp}")
+      endif()
     endif()
   endforeach()
 endif()
@@ -270,7 +260,9 @@ if(WIN32)
     list(APPEND EPICS_IOC_LIBRARIES ${EPICS_ws2_32_LIBRARY})
     list(APPEND EPICS_HOST_LIBRARIES ${EPICS_ws2_32_LIBRARY})
   else()
-    message(WARNING "Can't find winsock")
+    if(NOT EPICS_FIND_QUIETLY)
+      message(WARNING "Can't find winsock")
+    endif()
   endif()
 
 elseif(RTEMS)
