@@ -135,14 +135,47 @@ Search path is
 * ```${EPICS_BASE_DIR}/../<modname>/```
 * ```${EPICS_BASE_DIR}/```
 
+## "Host" vs. "Target when cross-compiling
+
+In relation to the EPICS Base definitions, the Host arch. is one
+which can run on the build host computer.
+The Target arch. may be different then the host, and these executables
+may not run on the host.
+
+CMake only supports building for a single target at a time.
+Host and Target detection implmented in [cmake/FindEPICSHostArch.cmake](cmake/FindEPICSHostArch.cmake)
+and [cmake/FindEPICSTargetArch.cmake](cmake/FindEPICSTargetArch.cmake)
+is based on what is detected by CMake.
+
+By default CMake builds for the Host, and requires a toolchain file to override this.
+Several toolchain files are provided in [toolchains/](toolchains/).
+
+When cross-compiling, the detected Host arch. is used to locate
+certain helper programs which must be run as part of the build process.
+
+If necessary the detected Host can be overridden by manually setting
+```-DEPICS_HOST_ARCH=<actual-host-arch>```.
+
+The Target can only be changed by specifying a toolchain file,
+or generator name (for msvc projects).
+Run ```cmake --help``` to see a list of supported generator names.
+
 ## Tested configurations
 
 See [.travis.yml](.travis.yml) for auto-tested configurations.
 
-### Linux hosted
+### Linux hosted (x86 or x86_64)
 
 Building on Linux for Linux targets works for 32 and 64-bit targets.
 Building for the host is the default behavour of cmake.
+
+### Linux hosted (build x86 on x86_64 host w/ multilib)
+
+Use toolchain file [toolchains/i686-w64-mingw32.cmake](toolchains/linux-x86.cmake).
+
+Note, when EPICS Base has *only* the 32-bit version it is also necessary
+to specify ```-DEPICS_HOST_ARCH=linux-x86``` to override the automatic host
+arch detection.
 
 ### Cross MinGW on Linux
 
