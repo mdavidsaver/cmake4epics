@@ -193,7 +193,7 @@ if(NOT EPICS_TARGET_COMPILER)
   endif()
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   # prepend the -debug version of all target names
   list(REVERSE EPICS_TARGET_ARCHS)
   foreach(_arch IN LISTS EPICS_TARGET_ARCHS)
