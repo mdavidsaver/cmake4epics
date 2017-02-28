@@ -215,7 +215,8 @@ if(NOT EPICS_HOST_COMPILER)
   message(SEND_ERROR "Unable to guess host compiler")
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+if(uppercase_CMAKE_BUILD_TYPE STREQUAL "DEBUG")
   # prepend the -debug version of all target names
   list(REVERSE EPICS_HOST_ARCHS)
   foreach(_arch IN LISTS EPICS_HOST_ARCHS)
