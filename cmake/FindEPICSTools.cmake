@@ -95,6 +95,8 @@ function(epics_expand_dbd outdbd)
   foreach(file ${_INPUTS})
     if(IS_ABSOLUTE ${file})
       list(APPEND DBDS ${file})
+      get_filename_component(dbddir ${file} DIRECTORY)
+      list(APPEND DBDFLAGS "-I${dbddir}")
       break()
     endif()
     find_file(dbdfile ${file}
