@@ -140,7 +140,7 @@ elseif(WIN32)
     if(MINGW)
       set(EPICS_TARGET_ARCHS "windows-x64-mingw")
   
-    else(CYGWIN)
+    elseif(CYGWIN)
       set(EPICS_TARGET_ARCHS "cygwin-x86_64")
 
     else()
