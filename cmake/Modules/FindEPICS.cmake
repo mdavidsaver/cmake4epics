@@ -111,14 +111,14 @@ include(${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake OPTIONAL RESULT_VARIABLE 
 if(NOT alreadyhaveepicsver)
   if(EPICS_TARGET_COMPILER STREQUAL msvc)
     execute_process(COMMAND
-                     ${CMAKE_CXX_COMPILER} -C -E -I${EPICS_CORE_INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/EPICSVersion.cmake.in
+                     ${CMAKE_CXX_COMPILER} -C -E -I${EPICS_CORE_INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/../Templates/EPICSVersion.cmake.in
                     RESULT_VARIABLE result
                     OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake
     )
 
   elseif(EPICS_TARGET_COMPILER STREQUAL solStudio)
     execute_process(COMMAND
-                     ${CMAKE_CXX_COMPILER} -E -Qn -I${EPICS_CORE_INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/EPICSVersion.cmake.in
+                     ${CMAKE_CXX_COMPILER} -E -Qn -I${EPICS_CORE_INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/../Templates/EPICSVersion.cmake.in
                     RESULT_VARIABLE result
                     OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake
     )
@@ -126,7 +126,7 @@ if(NOT alreadyhaveepicsver)
   else()
     # Assume GCC-ish for anything else
     execute_process(COMMAND
-                     ${CMAKE_CXX_COMPILER} -x c -E -I${EPICS_CORE_INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/EPICSVersion.cmake.in
+                     ${CMAKE_CXX_COMPILER} -x c -E -I${EPICS_CORE_INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/../Templates/EPICSVersion.cmake.in
                     RESULT_VARIABLE result
                     OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/EPICSVersion.cmake
     )

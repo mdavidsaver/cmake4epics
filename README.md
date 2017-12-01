@@ -58,7 +58,7 @@ Then to link against libca.
 See [caApp/CMakeLists.txt](caApp/CMakeLists.txt) for a full example
 
 ```cmake
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/c4e/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/c4e/cmake/Modules)
 find_package(EPICS COMPONENTS ca) # Com is implied
 add_executable(myexe ...source files...)
 target_compile_definitions(myexe
