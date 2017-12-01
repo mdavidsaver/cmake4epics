@@ -26,7 +26,7 @@ endif()
 
 cmake_minimum_required(VERSION 2.8)
 
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules")
 
 message(STATUS "System classification provided by CMake")
 
