@@ -97,20 +97,21 @@ function(epics_expand_dbd outdbd)
       list(APPEND DBDS ${file})
       get_filename_component(dbddir ${file} DIRECTORY)
       list(APPEND DBDFLAGS "-I${dbddir}")
-      break()
-    endif()
-    find_file(dbdfile ${file}
-      PATHS ${_PATHS}
-      NO_DEFAULT_PATH
-      NO_CMAKE_SYSTEM_PATH
-      NO_CMAKE_FIND_ROOT_PATH
-    )
-    if(dbdfile)
-      list(APPEND DBDS ${dbdfile})
+
     else()
-      message(FATAL_ERROR "Can't find ${file}")
+      find_file(dbdfile ${file}
+        PATHS ${_PATHS}
+        NO_DEFAULT_PATH
+        NO_CMAKE_SYSTEM_PATH
+        NO_CMAKE_FIND_ROOT_PATH
+      )
+      if(dbdfile)
+        list(APPEND DBDS ${dbdfile})
+      else()
+        message(FATAL_ERROR "Can't find ${file}")
+      endif()
+      unset(dbdfile CACHE)
     endif()
-    unset(dbdfile CACHE)
   endforeach(file)
 
   set_source_files_properties(${outdbd}
