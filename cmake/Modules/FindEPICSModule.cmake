@@ -75,6 +75,7 @@ function(find_epics_module)
       ${EPICS_MODULE_PATH}
       ${FEM_PATH}
       ${EPICS_BASE_DIR}/../${FEM_NAME}
+      ${EPICS_BASE_DIR}/../modules/${FEM_NAME}
       ${EPICS_BASE_DIR}
     NO_DEFAULT_PATH
     NO_CMAKE_SYSTEM_PATH
