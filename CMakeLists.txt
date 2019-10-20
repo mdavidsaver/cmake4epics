@@ -11,6 +11,12 @@
 # See the License for more information.
 #=============================================================================
 
+cmake_minimum_required(VERSION 2.8)
+
+# recent cmake requires this before project()
+# in order to pick up Platform/
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+
 project(osdetector C CXX)
 
 message(STATUS "All CMake variables")
@@ -23,10 +29,6 @@ endforeach()
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
-
-cmake_minimum_required(VERSION 2.8)
-
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules")
 
 message(STATUS "System classification provided by CMake")
 
